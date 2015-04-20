@@ -67,3 +67,16 @@ file to use JSON.
 7. Installed cpan modules  
 	cpanm -i LWP::Simple  
 	etc
+
+8. Installed Python 2.7.9 (existing python 2.6 lacked a necessary module)  
+	sudo wget https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz  
+	sudo chmod 755 Python-2.7.9.tgz  
+	tar -xvf Python-2.7.9.tgz  
+	cd Python-2.7.9  
+	./configure  
+	sudo make altinstall  
+	cd /home/ec2-user  
+	mkdir bin  
+	cd bin  
+	ln /home/ec2-user/Python-2.7.9/python python27
+
