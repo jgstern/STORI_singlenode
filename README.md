@@ -32,7 +32,10 @@ setup and usage of single-node STORI, with a few minor adjustments.
 by maxRuntime in STORIcontrol.py  
 	In the future I would like to make this limit adaptive and a
 	unique property of each run.
-4. Fixed divide by zero bug in sub DecideReduction of STORI.pl.
+4. Comparing CPU hours until convergence between different runs is now
+complicated, since more running STORI.pl processes mean slower performance.
+The runtime attribute should instead be thought of as "total process wall time for this run".
+5. Fixed divide by zero bug in sub DecideReduction of STORI.pl.
 
 Eventually I would like to integrate STORIstats with STORIcontrol,
 and rewrite the methods for saving and reading the job_data_STORI
