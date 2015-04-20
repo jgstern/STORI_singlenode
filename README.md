@@ -19,18 +19,18 @@ The user guide for multi-node STORI should be sufficient for
 setup and usage of single-node STORI, with a few minor adjustments.
 
 1. STORIcontrol.pl is now STORIcontrol.py
-	I refactored STORIcontrol from Perl to Python, to help me learn
+	  I refactored STORIcontrol from Perl to Python, to help me learn
 	Python. This means you'll need to have a working install of
 	Python 2.7, and invoke STORIcontrol with
-		>python STORIcontrol.py
-	STORIcontrol.py still needs to run in background to monitor convergence
+		  >python STORIcontrol.py
+	  STORIcontrol.py still needs to run in background to monitor convergence
 	and continue runs as necessary, but the overhead is low.
 2. The more runs you start, the slower everything goes
-	I changed beginSTORI.pl and continueSTORIfast_t.pl to kick off
+	  I changed beginSTORI.pl and continueSTORIfast_t.pl to kick off
 	new STORI.pl PIDs rather than submit new jobs to a job scheduler.
 3. Wall-clock limit for STORI.pl is uniform and now controlled
 by maxRuntime in STORIcontrol.py
-	In the future I would like to make this limit adaptive and a
+	  In the future I would like to make this limit adaptive and a
 	unique property of each run.
 4. Fixed divide by zero bug in sub DecideReduction of STORI.pl.
 
@@ -44,26 +44,26 @@ file to use JSON.
 1. Started m3.medium EC2 instance running RHEL 6.5. This OS was the only one I could find with a proper Perl installation.
 
 2. Installed perlbrew
-	\curl -L http://install.perlbrew.pl | bash
-	echo "source ~/perl5/perlbrew/etc/bashrc" >> .bash_profile
+	  \curl -L http://install.perlbrew.pl | bash
+	  echo "source ~/perl5/perlbrew/etc/bashrc" >> .bash_profile
 
 3. Installed GNUscreen:
-	sudo su
-	yum install screen
-	exit
+	  sudo su
+	  yum install screen
+	  exit
 
 4. Installed gcc
-	sudo su
-	yum install gcc
-	exit
+	  sudo su
+	  yum install gcc
+	  exit
 
 5. Installed Perl for ec2-user:
-	screen
-	perlbrew install perl-5.16.0
+	  screen
+	  perlbrew install perl-5.16.0
 
 6. Installed cpanm for (I think) all perlbrew perls
-	perlbrew install-cpanm
+	  perlbrew install-cpanm
 
 7. Installed cpan modules
-	cpanm -i LWP::Simple
-	etc
+	  cpanm -i LWP::Simple
+	  etc
