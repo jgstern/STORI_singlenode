@@ -1,0 +1,64 @@
+TfoX|DNA transformation protein (4x)
+start TfoX /nv/hp10/jstern7/scratch/STORI3_runfiles gammaproteobacteria 4 10
+
+hemagglutinin|quorum (4x)
+start HapR /nv/hp10/jstern7/scratch/STORI3_runfiles gammaproteobacteria 4 50
+
+ComE (4x)
+start ComEA /nv/hp10/jstern7/scratch/STORI3_runfiles gammaproteobacteria 4 10
+
+CytR (4x)
+start CytR /nv/hp10/jstern7/scratch/STORI3_runfiles gammaproteobacteria 4 10
+
+PilA (4x)
+start PilA /nv/hp10/jstern7/scratch/STORI3_runfiles gammaproteobacteria 4 10
+
+chitinase (4x)
+start chitinase /nv/hp10/jstern7/scratch/STORI3_runfiles gammaproteobacteria 4 10
+
+cAMP (4x)
+start cAMP /nv/hp10/jstern7/scratch/STORI3_runfiles gammaproteobacteria 4 50
+
+
+tRNA\s[sS]ynthetase
+start all_tRNAsynthetase_bact_1x_STORI2 /nv/hp10/jstern7/scratch/STORI2_runfiles bacteria 4 50
+
+tRNA\s[sS]ynthetase
+start all_tRNAsynthetase_euk_1x_STORI2 /nv/hp10/jstern7/scratch/STORI2_runfiles eukaryota 4 50
+
+[hH]emoglobin
+start hemoglobin_eumetazoa_1x_STORI2 /nv/hp10/jstern7/scratch/STORI2_runfiles eumetazoa 4 20
+
+[hH]emoglobin
+start hemoglobin_b_eumetazoa_1x_STORI2 /nv/hp10/jstern7/scratch/STORI2_runfiles eumetazoa 4 20
+
+
+DNA.+methyltransferase (8x)
+start DNA_methyltransferase /nv/hp10/jstern7/scratch/STORI2_runfiles euk107 4 50
+
+kinase
+start euk_kinases /nv/hp10/jstern7/scratch/STORI2_runfiles euk107 4 100
+
+catenin
+start euk_catenins /nv/hp10/jstern7/scratch/STORI2_runfiles euk107 4 60
+
+catenin
+start euk_catenins_8x /nv/hp10/jstern7/scratch/STORI2_runfiles euk107 4 60
+
+
+[rR]ibosomal\s[pP]rotein\s[lLsS]\d+(\s|\/|[a-z]|[A-Z]) (1x)
+start all_rProt_bact /nv/hp10/jstern7/scratch/STORI2_runfiles bacteria 4 80
+
+[rR]ibosomal\s[pP]rotein\s[lLsS]\d+(\s|\/|[a-z]|[A-Z]) (1x)
+start all_rProt_arch /nv/hp10/jstern7/scratch/STORI2_runfiles archaea 4 80
+
+
+[hH]emoglobin (8x)
+start hemoglobin_euk_8x_STORI2 /nv/hp10/jstern7/scratch/STORI2_runfiles eukaryota 4 20
+
+.+ (1x)
+start all_bact /nv/hp10/jstern7/scratch/STORI2_runfiles bacteria 4 1000
+
+
+[eE]longation\s[Ff]actor\s[tT]u
+start eftu /nv/hp10/jstern7/scratch/STORI3_runfiles archaea 4 10

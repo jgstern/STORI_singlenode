@@ -1,0 +1,10 @@
+2287	Sulfolobus.solfataricus	crenarcheota
+43080	Sulfolobus.islandicus.L.S.2.15	crenarcheota
+178306	Pyrobaculum.aerophilum.str.IM2	crenarcheota
+2242	Halobacterium.sp.NRC1.Halobacterium.salinarum	halobacteria
+2173	Methanobrevibacter.smithii.DSM.2374	methanobacteria
+79929	Methanothermobacter.marburgensis.str.Marburg	methanobacteria
+39152	Methanococcus.maripaludis	methanococci
+69014	Thermococcus.kodakarensis.KOD1	thermococci
+70601	Pyrococcus.horikoshii.OT3	thermococci
+186497	Pyrococcus.furiosus.DSM.3638	thermococci
