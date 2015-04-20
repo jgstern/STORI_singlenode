@@ -80,5 +80,6 @@ file to use JSON.
 	cd bin  
 	ln /home/ec2-user/Python-2.7.9/python python27
 	
-9. To save GitHub space I omitted the BLAST executables from the STORI_singlenode repo, however you will find them in the STORI repo.
+9. To save GitHub space I omitted the BLAST executables from the STORI_singlenode repo, however you will find them in the STORI repo.  
+https://github.com/jgstern/STORI
 
