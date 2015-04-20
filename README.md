@@ -79,4 +79,6 @@ file to use JSON.
 	mkdir bin  
 	cd bin  
 	ln /home/ec2-user/Python-2.7.9/python python27
+	
+9. To save GitHub space I omitted the BLAST executables from the STORI_singlenode repo, however you will find them in the STORI repo.
 
