@@ -272,7 +272,7 @@ sub ResetAllScores {		#Allows seed sequences to stick around as long or as short
 			print OUT "ultimate close to penultimate\n";
 			$ans = $ultimate;
 		}
-		if ($ans == 0) { $ans = 1; }	#returning 0 would crash STORI, and 1 is fine, the point is that the reduction should be small
+		if ($ans == 0) { $ans = 2; }	#returning 0 would crash STORI, and 2 is fine, the point is that the reduction should be small
 		return $ans;
 	}
 	
