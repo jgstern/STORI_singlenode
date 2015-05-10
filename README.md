@@ -10,6 +10,8 @@ Thesis: [http://linkd.in/1fZO63l](http://linkd.in/1fZO63l)
 
 ###4/20/2015 - Introducing single-node STORI
 
+https://github.com/jgstern/STORI_singlenode
+
 Now STORI should run on any box with bash, Perl, and Python.
 The initial release of STORI requires a cluster using the job
 scheduler Moab, but this latest release runs on a single node.
