@@ -6,8 +6,8 @@ STORI
 User Guide: [http://bit.ly/1cL2WKu](http://bit.ly/1cL2WKu)
 Thesis: [http://linkd.in/1fZO63l](http://linkd.in/1fZO63l)
 
-##For the context and motivation behind STORI, check out my open working draft:
-##[Nine ways you can turbocharge the biotech business](https://www.overleaf.com/read/wfbnqffxdsrt)
+####For the context and motivation behind STORI, check out my open working draft:
+####[Nine ways you can turbocharge the biotech business](https://www.overleaf.com/read/wfbnqffxdsrt)
 
 
 ###4/20/2015 - Introducing single-node STORI
