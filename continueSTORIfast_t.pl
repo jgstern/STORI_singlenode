@@ -1,7 +1,16 @@
 #command: perl /path/to/continueSTORI.pl /path/to/file-A /path/to/file-B runNumberA runNumberB /path/to/dir/containing/source/dir taxaFile windowSize finalMaxFams
 
-#use lib '/nv/hp10/jstern7/perl5reinstall/lib';
-#use lib '/nv/hp10/jstern7/perl5reinstall/lib/perl5';
+#		Once both iterators have finished, STORIcontrol.py finds the
+#	intersection of the results from each independent output, and provides the
+#	intersection set to each of a new pair of iterators. Rather than assign each
+#	seed sequence to its own quasi family, as beginSTORI.pl did for the first iterator pair,
+#	continueSTORIfast_t.pl includes the previous iterator pair’s predictions of which
+#	sequences are orthologous (members of the same family). These new processes may
+#	provide similar output at first, since their inputs were identical. However,
+#	each iterator’s full taxa list begins in a randomized order, which the iterators
+#	reshuffle every time their sliding windows reach the ends of their lists. This
+#	randomization causes the iterators to sample different areas of family space. 
+	
 use Data::Dumper;
 
 my $STORIdir = "/home/ec2-user/STORI/";

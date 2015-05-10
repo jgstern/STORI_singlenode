@@ -1,6 +1,10 @@
+#STORI begins by accepting from the
+#user a set of seed protein sequences and an upper limit to the number of
+#different families (sets of orthologs) it may retrieve. STORI randomly
+#scatters the seeds into two parallel, independent iterator processes. 
+
 #command: perl /path/to/beginSTORI.pl runNumber /path/to/dir/containing/source/dir taxaFile windowSize finalMaxFams
-#use lib '/nv/hp10/jstern7/perl5reinstall/lib';
-#use lib '/nv/hp10/jstern7/perl5reinstall/lib/perl5';
+
 use Data::Dumper;
 
 my $blastdb_dir = "/home/ec2-user/STORI/universal20150110/blast";
@@ -273,6 +277,18 @@ sub MakeQueryGis_new {
 	#}
 	
 	open giFile, ">>$queryGiPath";
+	
+#	The below foreach loop ensures that when the STORI.pl iterator begins, 
+#	each seed has its own unique
+#“quasi”-family. The quasi-families are not biologically meaningful families.
+#However, as iteration progresses in STORI.pl, these quasi-families will become plausible
+#predictions of families (orthologous proteins). 
+	
+#	To prevent abundant families from outcompeting sparse families, beginSTORI.pl can boost
+#the seed sequence scores. Using a
+#single parameter $offset_factor, the user defines a range for all initial seed scores,
+#specifying the extent to which the seeds persist for multiple taxa list
+#traversals within the first pair of STORI.pl instances.
 	
 	my $x=0;
 	foreach my $gi (@seedGis) {

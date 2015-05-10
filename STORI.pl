@@ -1,11 +1,15 @@
 #STORI: Selectable Taxa Ortholog Retrieval Iteratively
 #command: /path/to/STORI_test.pl runNumber /path/to/source/files/dir windowSize finalMaxFams
 
-
+#Each iterator (each STORI.pl instance) BLASTs the seeds against taxon databases.
+#Within each iterator,
+#the results of each search become queries for subsequent searches. Each iterator
+#dynamically assigns sequences to different families as the results accumulate.
+#By keeping track of the frequency with which queries from each family choose a
+#particular sequence as a best hit, STORI assigns each hit to a family.
 
 #!/usr/bin/perl -wT
-#use lib '/nv/hp10/jstern7/perl5reinstall/lib';
-#use lib '/nv/hp10/jstern7/perl5reinstall/lib/perl5';
+
 use strict;
 use Fcntl ':flock';
 use Data::Dumper;
@@ -19,8 +23,6 @@ my $blastdbDir="/home/ec2-user/STORI/universal20150110/blast";
 my $blastdbcmdPath = "/home/ec2-user/STORI/blastdbcmd";
 my $blastpPath = "/home/ec2-user/STORI/blastp"; 
 my $getParentTaxaPath = "/home/ec2-user/STORI/getParentTaxa.pl";
-
-
 
 my $runNumber = shift(@ARGV);		
 my $sourceFilesDir = shift(@ARGV);
@@ -85,6 +87,11 @@ while (<parentTaxaData>) {
 print OUT Dumper \%gi_lookup_hash;
 
 
+#The seed sequences come from a random draw from the results pool of a
+#user-initiated keyword search of the natural language annotations of every
+#taxon’s protein sequence database. (beginSTORI.pl)
+
+
 #2: load query gis into %taxon_gi_assigned
 open (BATCH_QUERY, "$batchQueryFilePath");
 my @queryArr_unparsed = <BATCH_QUERY>; my %tempHash=();
@@ -130,30 +137,64 @@ $blastdbDir = $blastTemp;
 print "using $blastdbDir as database location\n";
 
 
+
 my $searchOrderPlaceMarker =0;
 my %small_txgi=();
 my $avgVisitCount=0;
 my $seedDecay=1000;
 while ($superDuperRepeatFlag == 1) {		#this loop causes multiple iterations where the taxon search order is reshuffled after each iteration
 											#superDuperRepeatFlag is determined by ShuffleTaxaArr - when set to 0, the families have stabilized
+											#Iteration repeats until a user-defined time limit expires, or the iterator stops finding new sequences.
 	$searchOrderPlaceMarker =0;
 	while ($searchOrderPlaceMarker <= ($#taxaArr-($windowSize-1))) {
-	
+#							At the beginning of an iteration, STORI chooses a small, user defined number of
+#						taxa (usually 4). STORI makes this choice by sliding a window of user-defined
+#						size (usually 4) down a list of all the taxa. At iteration 1, the window is at
+#						the top of the full taxa list, and the window will advance by one list element
+#						with each subsequent iteration.
 		%small_txgi = %{GetNextWindow()};
-
+#						 After selecting the small list of taxa, STORI
+#						cycles through each quasi-family and BLASTs any sequences assigned to that
+#						family, within the small taxa window, against each taxon in the window.
+#						STORI
+#						parses the BLAST results and assigns any best hits to their parent taxa within
+#						the family.
 		GetSeqs();
-		
+#						  After using BLAST to retrieve best-hits for each quasi-family, STORI
+#						identifies best hits assigned to multiple families and prunes all but the most
+#						popular.
 		PruneAndReassignIntermediate();
+#						 After pruning, the small taxa window slides down the full taxa list by
+#						one element.
 		
 		$searchOrderPlaceMarker++;
 	}
-	
+
+#   PruneAndReassign checks for "orphan" sequences with a score of 1, possibly
+#   indicating the sequence is a pseudo-ortholog (see comments in sub).
+
 	PruneAndReassign();
 	
+#			STORI takes a few additional steps to produce reasonable orthology predictions.
+#		 On the one hand, these steps usually prevent capture by local optima,
+#		and on the other, they prevent orthology predictions from careening off to an
+#		irrelevant part of family space.
+		
+#		To prevent family scattering, Merge() may execute once the sliding window
+#hits the bottom of the taxa list. This step compares every family with every
+#other family, and merges all families above a similarity threshold. To avoid
+#undermining the boosted seed scores, merges only occur when the seed scores and
+#non-seed scores have similar magnitudes.
+		
 	print OUT "seedDecay is $seedDecay\n";
 	if ($seedDecay <= 1.4) {
 		print OUT "merging\n";
 		Merge(0.8); }
+	
+#	RemoveExtraFamilies sorts the families by number of member sequences. If the number of
+#families is larger than $finalMaxFams, then RemoveExtraFamilies
+#deletes the smallest families until the number of families does not exceed the
+#maximum allowable.
 	
 	RemoveExtraFamilies($finalMaxFams);
 	
@@ -200,6 +241,10 @@ sub Max {
 sub ResetAllScores {		#Allows seed sequences to stick around as long or as short as the user wishes.
 							#Higher initial scores for the seed sequences means they will have a garaunteed presence 
 							#for more traversals and the algorithm will be more sensitive to identifying these families if they are sparsely represented (because of, eg, gene loss).
+							#	ResetAllScores decreases the
+							#seed scores by the value of the highest non-seed score, and resets the non-seed
+							#scores to 2. This reset enables non-seed sequences to move between families in
+							#the next taxa list traversal.
 	
 	my $reduction = DecideReduction();
 	my @scores=();
@@ -420,7 +465,13 @@ sub GetSeqs {
 }
 
 
-
+#		In addition to replicating PruneAndReassignIntermediate,
+#   PruneAndReassign checks for “orphan” sequences with a score of 1.
+# When it identifies an orphan, PruneAndReassignIntermediate
+#   moves the sequence to a new
+#	family. A score of 1 means that only one of that sequence’s presumed orthologs
+#	chose it as a best hit; in this scenario paralogy may be more probable than
+#	orthology.
 sub PruneAndReassign {
 	my $countx=0;
 	foreach my $taxon (@taxaArr) {

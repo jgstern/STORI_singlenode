@@ -49,9 +49,9 @@ overview of the different scripts, to help explain the purpose of STORIcontrol.p
 		
 =item * If the user does nothing
 	
-	Then after 10 minutes STORIcontrol will cycle through its record of
+	Then after 15 seconds STORIcontrol will cycle through its record of
 	existing runs, and update the status of each run using checkSTORI.pl.
-	The run parameters are backed up in in job_data_STORI.txt
+	The run parameters are saved in job_data_STORI.txt
 	
 	If both PIDs in a run have completed
 	
@@ -145,7 +145,14 @@ class Run:
 		self.SetRunIDs()
 		#print "beginSTORI and SetRunIDs complete\n"
 		return True
-		
+	
+	
+		'''
+		ContinueRetrieval_t
+		Once both iterators have finished, the STORI run controller finds the
+	intersection of the results from each independent output, and provides the
+	intersection set to each of a new pair of iterators. 
+	'''
 	def ContinueRetrieval_t(self):
 		self.STORIcount += 1
 		
@@ -413,6 +420,12 @@ class RunSet():
 			self.runHash[runName].runA_id = int(runid_A)
 			self.runHash[runName].runB_id = int(runid_B)
 			
+			'''
+			Periodically, the STORI controller compares the results of the iterators, and
+			assigns the pair a score reflecting how similar their orthology predictions are
+			to one another. 
+			'''
+			
 		for runName in self.runHash.keys():			#cycle through the not-converged runs in runHash, updating scores and runtimes, and start a new run if prev are finished and not converged
 			if ((self.runHash[runName].converged == False) and (self.runHash[runName].paused == False)):
 				#print "checking non-converged non-paused runs\n"
@@ -483,6 +496,11 @@ class RunSet():
 						b = (a - 1)
 						c = (b - 1)
 						print "checking convergence...\n"
+						'''
+						Eventually the similarity score stabilizes in the range of
+						90-100%. When the controller detects this stabilization, it labels the run as
+						converged and stops further iteration.
+						'''
 						self.runHash[runName].CheckConvergence2(a,b,c)
 						if not(self.runHash[runName].converged):
 							#tempScore = (sum(self.runHash[runName].runStats[STORIcount]["scores"])/len(self.runHash[runName].runStats[STORIcount]["scores"]))

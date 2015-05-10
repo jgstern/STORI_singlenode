@@ -25,10 +25,16 @@ my $repeat=1;
 my %index_master=();
 my %groups=();
 LoadGroups();
+
+#print "here is the converged hash after LoadGroups\n";
+#print Dumper \%converged;
+#print "here is groups after LoadGroups\n";
+#print Dumper \%groups;
+
 my %runHash = %{LoadRunData($arrayFile)};
 
 
-#print "here is the converged hash after LoadRunData\n";
+#print "\n\n\nhere is the converged hash after LoadRunData\n";
 #print Dumper \%converged;
 #print "here is groups after LoadRunData\n";
 #print Dumper \%groups;
@@ -40,7 +46,8 @@ my %clipboard_hash=();
 my %clipboard=();
 
 ShowMenu();
-
+print "\n\n";
+%index_master = %{ShowRuns()};
 
 while ($repeat==1) {
 	
@@ -274,21 +281,24 @@ sub ShowMenu {
 Single-node STORI ©2015 JG Stern
 	\n\t\tCommands:
 	\t\tshow <\'runs\' \|\| \'groups\' \|\| \'clipboard\' \[index \|\| \-all <org_file> \|\| \-fulltaxa <org_file>\] \|\| run-name [-c \|\| -org <file>]>
-	\t\tgroup <new-group-name> \(<1 or more run-names> \|\| \-f <existing_group> thru <regexp>\)
-	\t\tstats <run-name \|\| group-name>
-	\t\tungroup <group-name>
-	\t\tdetail <run-name>
-	\t\tgetid <group>
 	\t\tsummarize <run-name | indices | group> \[\-org <org_file> \(iff summarizing a single run\)\]
 	\t\tclear <clipboard indices>
+	\t\tdetail <run-name>
+	\t\tstats <run-name \|\| group-name>
+	\t\tannotate <clipboard index>
+	\t\tName <cutoff> (automatically renames families in clipboard\; moderately accurate)
+	\t\tmenu
+	\t\texit
+		
+	\tExperimental commands:
+	\t\tgroup <new-group-name> \(<1 or more run-names> \|\| \-f <existing_group> thru <regexp>\)
+	\t\tungroup <group-name>
+	\t\tgetid <group>
 	\t\tdistance <identity \|\| bitscore \|\| sd> <clipboard indices>
 	\t\tscramble <clipboard indices>
-	\t\tannotate <clipboard index>
 	\t\trename <clipboard index> <new_name>
-	\t\tName <cutoff> (automatically renames families in clipboard\; moderately accurate)
 	\t\toverlap (identifies overlaps between families on the clipboard)
-	\t\texport clipboard <family-suffix> <file_name \(no path\)> <org_file \(no path\)>
-	\t\texit\n";
+	\t\texport clipboard <family-suffix> <file_name \(no path\)> <org_file \(no path\)>\n";
 }
 
 
@@ -1508,8 +1518,11 @@ sub SaveGroups {
 	my @grpNames=keys %groups;
 	
 	foreach my $name (@grpNames) {
-		my @members=@{$groups{$name}};
-		print grpFile $name . ": " . join(" ", @members) . "\n";
+		if (!($name eq "unconverged" || $name eq "converged" || $name eq "paused" || $name eq "all")) {
+			my @members=@{$groups{$name}};
+			print grpFile $name . ": " . join(" ", @members) . "\n";
+			#print $name . ": " . join(" ", @members) . "\n";
+		}
 	}
 	close grpFile;
 }
@@ -1521,9 +1534,12 @@ sub LoadGroups {
 	while (my $line=<grpFile>) {
 		chomp($line);
 		$line=~ m/(.+):\s(.+)/;
-		my $grpName = $1;
-		my @members = split / /, $2;
-		$groups{$grpName} = [@members];
+		if (defined $1) {
+			my $grpName = $1;
+			my @members = split / /, $2;
+			$groups{$grpName} = [@members];
+			#print "\$groups\{$grpName\}\=\[" . join(" ", @members) . "\]\n";
+		}
 	}
 	close grpFile;
 }
@@ -2018,6 +2034,9 @@ sub LoadRunData {		#loads a specified CSV file into a hash and returns the hash'
 							$converged{$runName} = 1;	
 							@convergedArr = keys %converged;
 							$groups{"converged"} = [@convergedArr];
+							if (exists $unconverged{$runName}) {
+								delete $unconverged{$runName};
+							}
 						}
 						elsif ($score =~ m/paused/) {
 							my @pausedArr = ();							
