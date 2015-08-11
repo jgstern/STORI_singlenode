@@ -3,12 +3,11 @@ STORI
 
 ###Selectable Taxon Ortholog Retrieval Iteratively
 
+####For the motivation behind STORI, check out our PrePrint:
+####[Accessing and applying molecular history](https://dx.doi.org/10.7287/peerj.preprints.1293v1)
+
 User Guide: [http://bit.ly/1cL2WKu](http://bit.ly/1cL2WKu)
 Thesis: [http://linkd.in/1fZO63l](http://linkd.in/1fZO63l)
-
-####For the motivation behind STORI, check out:
-####[Accessing and applying molecular history](https://www.overleaf.com/read/wfbnqffxdsrt)
-
 
 ###4/20/2015 - Introducing single-node STORI
 
