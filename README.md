@@ -71,6 +71,7 @@ file to use JSON.
 	yum install bzip2  
 	yum install perl-core  
 	yum install wget  
+	exit  
 
 5. Installed Perl for ec2-user:  
 	screen  
