@@ -64,12 +64,12 @@ file to use JSON.
 	yum install gcc  
 	exit
 
-(If on CentOS 7)
-4b. Installed "Development Tools"
-	sudo su
-	yum groupinstall "Development Tools"
-	yum install bzip2
-	yum install perl-core
+(If on CentOS 7). 
+4b. Installed "Development Tools"  
+	sudo su  
+	yum groupinstall "Development Tools"  
+	yum install bzip2  
+	yum install perl-core  
 
 5. Installed Perl for ec2-user:  
 	screen  
