@@ -7,9 +7,9 @@
 
 use Data::Dumper;
 
-my $blastdb_dir = "/home/ec2-user/STORI/universal20150110/blast";
-my $blastdbcmdPath = "/home/ec2-user/STORI/blastdbcmd";
 my $home = "/home/ec2-user/STORI";
+my $blastdb_dir = $home . "/universal20150110/blast";
+my $blastdbcmdPath = $home . "/blastdbcmd";
 my $runNumber=shift(@ARGV);
 my $parentDirPath=shift(@ARGV);
 my $searchOrderFile=shift(@ARGV);
@@ -79,8 +79,6 @@ if ($go =~ m/yes/) {
 	my $queryGiPathB = $sourceDirPathB . "/". $queryGiFileB;
 	
 	my %annot_hash = ();
-	#my @first8 = @{MakeRandomSearchOrder($orderAfile)};
-	#my @second8 = @{MakeRandomSearchOrder($orderBfile)};
 	my @taxaArr = @{MakeTaxaArr($orderAfile)};
 	
 	my $satisFlag="no"; my $annotQuery="derp";
@@ -228,15 +226,15 @@ sub MakeQueryGis_new {
 	print "searching taxID ";
 	foreach my $taxon (@smallTaxaArr) {			
 		print $taxon . " ";
-		my $cmd="$blastdbcmdPath -entry all -db $blastdb_dir\/$taxon -outfmt \"\%g \%t\"";
+		my $cmd="$blastdbcmdPath -entry all -db $blastdb_dir\/$taxon -outfmt \"\%a \%t\"";
 		my $annot = qx($cmd);
 		my @annotArr = split /\n/, $annot;
 		
 		while (@annotArr) {
 			my $subject = shift(@annotArr);
 			if ($subject =~ m/($queryText)/) {
-				$subject =~ m/(\d+)\s(.+)/;
-				my $gi = $1;
+				$subject =~ m/^(.+?)\s(.+)$/;
+				my $gi = $1;					#not actually the GI number anymore, but leaving variable name as is
 				my $annotation = $2;
 				$annot_hash{$taxon}{$gi} = $annotation;
 			}
@@ -247,14 +245,9 @@ sub MakeQueryGis_new {
 	@smallTaxaArr = keys %annot_hash;  #we only want to choose from taxa that contain hits
 	my $taxaSize = ($#smallTaxaArr + 1);
 	
-	#my $n = 1;
-	#if (int(0.05 * $taxaSize) > $n) {
-	#	$n = int(0.05 * $taxaSize);
-	#}
 	print "\nsmallTaxaArr\: $#smallTaxaArr $taxaSize\n";
 	fisher_yates_shuffle(\@smallTaxaArr);
-	#$n--;
-	#my @taxaSample = @smallTaxaArr[0..$n];
+
 	my @taxaSample = ();
 	
 	my @seedGis=();
@@ -267,14 +260,6 @@ sub MakeQueryGis_new {
 		}
 	}
 	print "taxa sampled\: " . join(" ", @taxaSample) . "\n";
-	
-	#my @seedGis=();
-	#foreach my $taxon (@taxaSample) {
-#		my %temp = %{$annot_hash{$taxon}};
-	#	foreach my $gi (keys %temp) {
-	#		push @seedGis, $gi;
-	#	}
-	#}
 	
 	open giFile, ">>$queryGiPath";
 	
