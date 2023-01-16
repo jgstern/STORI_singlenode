@@ -1,20 +1,20 @@
-#use lib '/nv/hp10/jstern7/perl5reinstall/lib';
-#use lib '/nv/hp10/jstern7/perl5reinstall/lib/perl5';
+use lib '/nv/hp10/jstern7/perl5reinstall/lib';
+use lib '/nv/hp10/jstern7/perl5reinstall/lib/perl5';
 
 use Statistics::Descriptive;
 
 #takes fasta files as input, makes them nonredundant, and then makes them into blast databases
 
-$projectDir = "/home/ec2-user/STORI/universal20150110"; 
+$projectDir = "/home/josh/scratch/viruses_2017"; 
 $hitDir = $projectDir . "/hits";
 
 #get taxa list
-$taxaFile = "/home/ec2-user/STORI/taxids_GIs.txt";   #a list of taxids
+$taxaFile = "/home/josh/STORI/taxids_GIs.txt";   #a list of taxids
 
-$makeblastdbPath="/home/ec2-user/STORI/makeblastdb";  #path to the blast+ program makeblastdb
+$makeblastdbPath="/home/josh/STORI/makeblastdb";  #path to the blast+ program makeblastdb
 $blastDirPath = $projectDir . "/blast";
 
-$nrdbLoc = "/home/ec2-user/STORI/bp_nrdb_SHA.pl";
+$nrdbLoc = "/home/josh/STORI/bp_nrdb_SHA.pl";
 
 
 open (taxa, $taxaFile);
@@ -36,24 +36,27 @@ foreach $taxon (@taxaArr) {
 	$command="perl $nrdbLoc -o $nrfilename $filename";
 	print "cmd is: $command\n";
 	system("$command");
-	
 	RemoveExtraGIs($nrfilename, $nrGIfilename, $taxon);
-	
 	$command="$makeblastdbPath -parse_seqids -in $nrGIfilename -title $taxon -out $blastDirPath/$taxon";
 	print "cmd is: $command\n";
 	system("$command");
+        #print "ok lets take 5";
+        #sleep 5;
+        #print "\n";
+        #sleep 300;
 }
 
-sub MaxDex {
-	my($ref_arr) = @_;
-	my @array = @{$ref_arr};
-	my $stat = Statistics::Descriptive::Full->new();
-	$stat->add_data(@array);
-	$answer = $stat->maxdex();
-	return $answer;
-}
 
-sub RemoveExtraGIs {
+sub RemoveExtraGIs {  #doesn't actually remove anything. NCBI no longer uses GIs in a way that is compatible with STORI
+		      #furthermore, even if a sequence were to have multiple accessions in our custom BLAST databases,
+		      #I have a hunch it won't matter and the sequence will just be retrievable via any of its accessions
+		      #Keeping the name out of laziness.
+		      #All this does is create the special-case hitfiles for what the result should be when we blast a 
+		      #taxon against itself.
+		      #The only scenario in which having multiple accessions per sequence might be a problem is if
+		      #the BLAST results return all of the accessions rather than just 1 of them,
+		      #and in a subsequent search STORI interprets all of the accessions as a single accession
+		      #this will need testing to clear up.
 	my $nrFileName = shift(@_);
 	my $nrGIfilename = shift(@_);
 	my $taxID = shift(@_);
@@ -69,44 +72,12 @@ sub RemoveExtraGIs {
 	my $r=0;
 	foreach $line (@fastaArr)
 	{
-		if ($line =~ m/^(>.+?;)(\s:gi.+\n)/) { 		#match before semicolon nongreedily
-			@deflines = split /gi\|/,$line; my $index=0;
-			shift @deflines; #first elt is >
-			
-			foreach $def (@deflines) {
-				my @gis=();
-				if ($def =~ m/(\d+?)\|.*/) {
-					push @gis, $1;	
-				}
-				$index = MaxDex(\@gis);
-			}
-			
-			my $final;
-			#$fastaArr[$r] = $1;
-			if ($deflines[$index] =~ m/(.+)\;\s:$/) {
-				$final = $1; }
-			else {
-				$final = $deflines[$index];
-			}
-			
-			my $gi;
-			if ($final =~ m/^(\d+)\D+/) {
-				$gi = $1;
-				print hitfile $gi . "\t" . $gi . "\t100\n";
-			}
-			
-			$fastaArr[$r] = ">gi|" . $final;
-			#print "match!! num1 is: $1 \n\n and num2 is: $2 \n\n";
+		if ($line =~ m/^>(.+?)\s(.+)$/) { 		#match before space nongreedily
+			my $accession = $1;
+			print hitfile $accession . "\t" . $accession . "\t100\n";
 		}
-		else {
-			chomp($line);
-			my $gi;
-			if ($line =~ m/^gi|(\d+)\D+/) {
-				$gi = $1;
-				print hitfile $gi . "\t" . $gi . "\t100\n";
-			}
-			$fastaArr[$r] = $line; 
-		}
+		chomp($line);
+		$fastaArr[$r] = $line;
 	
 		print nrgifile "$fastaArr[$r]\n";
 		
@@ -117,5 +88,3 @@ sub RemoveExtraGIs {
 	close nrgifile;
 	close hitfile;
 }
-
-
