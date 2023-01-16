@@ -95,6 +95,8 @@ file to use JSON.
 	cd bin  
 	ln /home/ec2-user/Python-2.7.9/python python279
 	
-9. To save GitHub space I omitted the BLAST executables from the STORI_singlenode repo, however you will find them in the STORI repo.  
-https://github.com/jgstern/STORI
+9. To save GitHub space I omitted the BLAST executables from the STORI_singlenode repo, however you will find them in the STORI repo. so these commands should retrieve them:  
+	wget https://github.com/jgstern/STORI/raw/master/blastdbcmd  
+	wget https://github.com/jgstern/STORI/raw/master/blastp  
+	wget https://github.com/jgstern/STORI/raw/master/makeblastdb  
 
