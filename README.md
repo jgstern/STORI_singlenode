@@ -46,8 +46,9 @@ file to use JSON.
 
 
 
-###Method for preparing an EC2 instance for STORI:
-1. Started m3.medium EC2 instance running RHEL 6.5. This OS was the only one I could find with a proper Perl installation.
+###Method for preparing a VM for STORI:
+1. Started m3.medium EC2 instance running RHEL 6.5. This OS was the only one I could find with a proper Perl installation (current as of 2015)
+1b. Or use CentOS 7 (which is the closest free distro to RHEL 6.5 easily available on GCP in 2023)
 
 2. Installed perlbrew  
 	\curl -L http://install.perlbrew.pl | bash  
@@ -62,6 +63,13 @@ file to use JSON.
 	sudo su  
 	yum install gcc  
 	exit
+
+(If on CentOS 7)
+4b. Installed "Development Tools"
+	sudo su
+	yum groupinstall "Development Tools"
+	yum install bzip2
+	yum install perl-core
 
 5. Installed Perl for ec2-user:  
 	screen  
