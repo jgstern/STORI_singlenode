@@ -9,6 +9,8 @@
 #particular sequence as a best hit, STORI assigns each hit to a family.
 
 #!/usr/bin/perl -wT
+use lib '/nv/hp10/jstern7/perl5reinstall/lib';
+use lib '/nv/hp10/jstern7/perl5reinstall/lib/perl5';
 
 use strict;
 use Fcntl ':flock';
@@ -100,7 +102,7 @@ close BATCH_QUERY;
 foreach my $line (@queryArr_unparsed) {		
 	chomp($line);
 	if (!($line =~ m/h\s.+/)) {
-		if ($line =~ m/(\d+)\s(\d+)/) {
+		if ($line =~ m/(.+?)\s(.+?)/) {
 			#tempHash{<taxID>}{<gi>} = <score>
 			$tempHash{$gi_lookup_hash{$1}}{$1} = $2;
 		}
@@ -660,7 +662,7 @@ sub ParseAndAssign {
 	my $gi = $hitFreqArr_sorted[0][0];
 	my $score = $hitFreqArr_sorted[0][1];
 	
-	if (($gi =~ m/\d+/) && ($score =~ m/\d+/)) {
+	if (($gi =~ m/.+?/) && ($score =~ m/\d+/)) {
 		if (!(exists $taxon_gi_assigned{$fam}{$taxon}{$gi})) {
 			$taxon_gi_assigned{$fam}{$taxon}{$gi} = $score;
 			#print OUT "\$taxon_gi_assigned\{$fam\}\{$taxon\}\{$gi\} \= $score \n";
