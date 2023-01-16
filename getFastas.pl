@@ -16,15 +16,16 @@
 # if the genome is complete.
 
 
-#use lib '/nv/hp10/jstern7/perl5reinstall/lib';
-#use lib '/nv/hp10/jstern7/perl5reinstall/lib/perl5';
-use LWP::Simple;
+use lib '/nv/hp10/jstern7/perl5reinstall/lib';
+use lib '/nv/hp10/jstern7/perl5reinstall/lib/perl5';
 use Data::Dumper;
+use HTTP::CookieJar::LWP ();
+use LWP::UserAgent       ();
 
 $projectDir = "/home/ec2-user/STORI/universal20150110";  
 #get taxa list
 $taxaFile = "/home/ec2-user/STORI/taxids_GIs.txt";   #a list of taxids and Genome GIs
-
+$userAgent = "www.github.com/jgstern";  #this is how you will be represented to NIH's server
 
 if (!(-d $projectDir)) {
 	my $cmd = "mkdir $projectDir";
@@ -49,17 +50,19 @@ open (TAXA, $taxaFile);
 close TAXA;
 $count=0;
 foreach my $line (@fileArr) {
+	#print $line;
 	my @lineArr=split / /, $line;
 	my $taxID = shift(@lineArr);
 	my @temp = ();
 	SETLOOP: foreach my $elt (@lineArr) {
-		if ($elt =~ m/^(\d+)$/) {
-			push @temp, $1;
-		}
-		elsif ($elt =~ m/^na$/) {
+		if ($elt =~ m/^na$/) {
 			$accessionHash{$taxID} = "na";
 			last SETLOOP;
 		}
+                elsif ($elt =~ m/^(.+)$/) {
+                        push @temp, $1;
+                }
+
 	}
 	$accessionHash{$taxID} = [@temp] if ($#temp >= 0);
  }
@@ -85,6 +88,25 @@ foreach my $taxon (keys %accessionHash) {
 
 print Dumper \%retrievalReport;
 
+sub MyUrlGetter {
+	my $jar = HTTP::CookieJar::LWP->new;
+	my $ua  = LWP::UserAgent->new(
+    		cookie_jar        => $jar,
+    		protocols_allowed => ['http', 'https'],
+    		timeout           => 10,
+	);
+	$ua->env_proxy;
+	$ua->agent($userAgent);
+	my $url = shift(@_);
+	my $response = $ua->get($url);
+	if ($response->is_success) {
+    		return $response->decoded_content;
+	}
+	else {
+    		return $response->status_line;
+	}
+}
+
 
 sub RetrieveFasta_linked {
 	my $taxon = shift(@_);
@@ -96,7 +118,6 @@ sub RetrieveFasta_linked {
 	my $successful=0;
 	my $efetch_out="";
 	foreach my $id (@giArr) {
-	
 		# Download protein records linked to nucleotide records.
 		my $db1 = 'nuccore';  # &dbfrom
 		my $db2 = 'protein';     # &db
@@ -110,7 +131,7 @@ sub RetrieveFasta_linked {
 	
 		#post the elink URL
 		print "$url\n";
-		$output = get($url);
+		$output = MyUrlGetter($url);
 		
 		#parse WebEnv and QueryKey
 		$web = $1 if ($output =~ /<WebEnv>(\S+)<\/WebEnv>/);
@@ -121,7 +142,7 @@ sub RetrieveFasta_linked {
 		$url = $base . "efetch.fcgi?db=$db2&query_key=$key&WebEnv=$web";
 		$url .= "&rettype=fasta&retmode=text";
 		
-		my $fetched = get($url);
+		my $fetched = MyUrlGetter($url);
 		
 		if (!($fetched =~ m/\<ERROR\>/)) {
 			#open output file for writing
@@ -159,7 +180,7 @@ sub RetrieveFasta_nr {
 	$url = $base . "esearch.fcgi?db=protein&term=$query&usehistory=y";
 
 	#post the esearch url
-	$output = get($url);
+	$output = MyUrlGetter($url);
 	print "$url\n";
 
 	#parse WebEnv, QueryKey and Count (# records retreived)
@@ -207,7 +228,7 @@ sub RetrieveFasta_nr_nofilter {
 	$url = $base . "esearch.fcgi?db=protein&term=$query&usehistory=y";
 
 	#post the esearch url
-	$output = get($url);
+	$output = MyUrlGetter($url);
 	print "$url\n";
 
 	#parse WebEnv, QueryKey and Count (# records retreived)
@@ -223,7 +244,7 @@ sub RetrieveFasta_nr_nofilter {
 		$efetch_url = $base . "efetch.fcgi?db=protein&WebEnv=$web";
 		$efetch_url .= "&query_key=$key&retstart=$retstart";
 		$efetch_url .= "&retmax=$retmax&rettype=fasta&retmode=text";
-		$efetch_out = get($efetch_url);
+		$efetch_out = MyUrlGetter($efetch_url);
 		if (!($efetch_out =~ m/.*ERROR.*/)) {
 			print OUT "$efetch_out";
 			#print "done\n";
