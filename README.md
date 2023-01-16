@@ -47,8 +47,7 @@ file to use JSON.
 
 
 ###Method for preparing a VM for STORI:
-1. Started m3.medium EC2 instance running RHEL 6.5. This OS was the only one I could find with a proper Perl installation (current as of 2015)  
-1b. Or use CentOS 7 (which is the closest free distro to RHEL 6.5 easily available on GCP in 2023)  
+1. Install CentOS 7
 
 2. Installed perlbrew  
 	\curl -L http://install.perlbrew.pl | bash  
@@ -64,8 +63,7 @@ file to use JSON.
 	yum install gcc  
 	exit
 
-(If on CentOS 7). 
-4b. Installed "Development Tools"  
+5. Installed "Development Tools"  
 	sudo su  
 	yum groupinstall "Development Tools"  
 	yum install bzip2  
@@ -73,18 +71,35 @@ file to use JSON.
 	yum install wget  
 	exit  
 
-5. Installed Perl for ec2-user:  
+6. Installed Perl for ec2-user:  
 	screen  
 	perlbrew install perl-5.16.0
 
-6. Installed cpanm for (I think) all perlbrew perls  
+7. Installed cpanm for (I think) all perlbrew perls  
 	perlbrew install-cpanm
 
-7. Installed cpan modules  
-	cpanm -i LWP::Simple  
-	etc
+8. Install openssl
+	sudo su
+	cd /usr/src
+	wget https://www.openssl.org/source/openssl-3.0.7.tar.gz
+	tar -zxf openssl-3.0.7.tar.gz
+	rm openssl-3.0.7.tar.gz
+	cd /usr/src/openssl-3.0.7
+	./config
+	make
+	make test
+	make install
+	ln -s /usr/local/lib64/libssl.so.3 /usr/lib64/libssl.so.3
+	ln -s /usr/local/lib64/libcrypto.so.3 /usr/lib64/libcrypto.so.3
+	yum install zlib-devel
+	exit
+	[exit terminal then reopen]
+	openssl version
 
-8. Installed Python 2.7.9 (existing python 2.6 lacked a necessary module)  
+9. Install cpan modules  
+	cpanm -i Statistics::Descriptive Data::Dumper List::MoreUtils Time::Elapse Bio::SeqIO Getopt::Long LWP::Simple LWP::UserAgent HTTP::CookieJar::LWP LWP::Protocol::https
+
+10. Install Python 2.7.9 (python 2.6 lacks a necessary module)  
 	sudo wget https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz  
 	sudo chmod 755 Python-2.7.9.tgz  
 	tar -xvf Python-2.7.9.tgz  
@@ -96,7 +111,7 @@ file to use JSON.
 	cd bin  
 	ln /home/ec2-user/Python-2.7.9/python python279
 	
-9. To save GitHub space I omitted the BLAST executables from the STORI_singlenode repo, however you will find them in the STORI repo. so these commands should retrieve them:  
+11. To save GitHub space I omitted the BLAST executables from the STORI_singlenode repo, however you will find them in the STORI repo. so these commands should retrieve them:  
 	wget https://github.com/jgstern/STORI/raw/master/blastdbcmd  
 	wget https://github.com/jgstern/STORI/raw/master/blastp  
 	wget https://github.com/jgstern/STORI/raw/master/makeblastdb  
