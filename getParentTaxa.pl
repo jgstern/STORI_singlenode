@@ -43,7 +43,7 @@ foreach my $taxon (@taxaArr)
 	foreach my $gi (@giArr) #we just want the query gis, not the hits
 	{
 		chomp($gi);
-		$gi =~ s/^(\d+)\s+\d+\s+\d+.*/$1/;
+		$gi =~ s/^(.+?)\s+.+?\s+.+?.*/$1/;
 		$giArr[$count] = $gi;
 		#print $giArr[$count] . "\n"; 
 		$count++;
@@ -78,7 +78,7 @@ close BATCH_QUERY;
 foreach my $line (@queryArr_unparsed) {		
 	chomp($line);
 	if (!($line =~ m/h\s.+/)) {
-		if ($line =~ m/(\d+)\s(\d+)/) {
+		if ($line =~ m/(.+?)\s(.+?)/) {
 			#tempHash{<gi>} = <parent taxon>
 			$tempHash{$1} = $gi_lookup_hash{$1};
 			#print "tempHash\{" . $1 . "\} = " . $gi_lookup_hash{$1} . "\n";
