@@ -116,3 +116,6 @@ file to use JSON.
 	wget https://github.com/jgstern/STORI/raw/master/blastp  
 	wget https://github.com/jgstern/STORI/raw/master/makeblastdb  
 
+
+# TODO
+- make sure STORIstats.pl works with accessions rather than GIs
