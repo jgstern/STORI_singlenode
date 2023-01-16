@@ -78,26 +78,26 @@ file to use JSON.
 7. Installed cpanm for (I think) all perlbrew perls  
 	perlbrew install-cpanm
 
-8. Install openssl
-	sudo su
-	cd /usr/src
-	wget https://www.openssl.org/source/openssl-3.0.7.tar.gz
-	tar -zxf openssl-3.0.7.tar.gz
-	rm openssl-3.0.7.tar.gz
-	cd /usr/src/openssl-3.0.7
-	./config
-	make
-	make test
-	make install
-	ln -s /usr/local/lib64/libssl.so.3 /usr/lib64/libssl.so.3
-	ln -s /usr/local/lib64/libcrypto.so.3 /usr/lib64/libcrypto.so.3
-	yum install zlib-devel
-	exit
-	[exit terminal then reopen]
-	openssl version
+8. Install openssl  
+	sudo su  
+	cd /usr/src  
+	wget https://www.openssl.org/source/openssl-3.0.7.tar.gz  
+	tar -zxf openssl-3.0.7.tar.gz  
+	rm openssl-3.0.7.tar.gz  
+	cd /usr/src/openssl-3.0.7  
+	./config  
+	make  
+	make test  
+	make install  
+	ln -s /usr/local/lib64/libssl.so.3 /usr/lib64/libssl.so.3  
+	ln -s /usr/local/lib64/libcrypto.so.3 /usr/lib64/libcrypto.so.3  
+	yum install zlib-devel  
+	exit  
+	[exit terminal then reopen]  
+	openssl version  
 
 9. Install cpan modules  
-	cpanm -i Statistics::Descriptive Data::Dumper List::MoreUtils Time::Elapse Bio::SeqIO Getopt::Long LWP::Simple LWP::UserAgent HTTP::CookieJar::LWP LWP::Protocol::https
+	cpanm -i Statistics::Descriptive Data::Dumper List::MoreUtils Time::Elapse Bio::SeqIO Getopt::Long LWP::Simple LWP::UserAgent HTTP::CookieJar::LWP LWP::Protocol::https  
 
 10. Install Python 2.7.9 (python 2.6 lacks a necessary module)  
 	sudo wget https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz  
