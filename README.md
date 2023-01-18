@@ -118,4 +118,5 @@ file to use JSON.
 
 
 # TODO
-- make sure STORIstats.pl works with accessions rather than GIs
+- make sure STORIstats.pl works with accessions rather than GIs  
+- remove hard-coded file paths from continueSTORIfast_t.pl  
