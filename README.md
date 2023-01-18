@@ -28,7 +28,7 @@ setup and usage of single-node STORI, with a few minor adjustments.
 		  >python STORIcontrol.py  
 	STORIcontrol.py still needs to run in background to monitor convergence
 	and continue runs as necessary, but the overhead is low.
-2. The more runs you start, the slower everything goes  
+2. The more runs you start, the slower everything goes [assuming only 1 core]
 	I changed beginSTORI.pl and continueSTORIfast_t.pl to kick off
 	new STORI.pl PIDs rather than submit new jobs to a job scheduler.
 3. Wall-clock limit for STORI.pl is uniform and now controlled
