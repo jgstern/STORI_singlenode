@@ -16,7 +16,7 @@ https://github.com/jgstern/STORI_singlenode
 Now STORI should run on any box with bash, Perl, and Python.
 The initial release of STORI requires a cluster using the job
 scheduler Moab, but this latest release runs on a single node.
-I tested it on RHEL 6.5.
+I tested it on RHEL 6.5 [and as of 1/17/2023 am in the process of getting it working with CentOS 7 using NCBI's modern accession format, rather than GIs].
 
 The user guide for multi-node STORI should be sufficient for
 setup and usage of single-node STORI, with a few minor adjustments.
