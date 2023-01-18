@@ -1051,7 +1051,7 @@ sub MergePair {
 				}
 				else {			
 					my $giB = GetTopHit($taxon_gi_assigned{$famB}{$taxon});
-					if ($giB == $giA) {
+					if ($giB eq $giA) {
 						$newFam{$taxon}{$giA} = $scoreA;
 					}
 					else {
@@ -1072,7 +1072,7 @@ sub MergePair {
 				}
 				else {
 					my $giA = GetTopHit($taxon_gi_assigned{$famA}{$taxon});
-					if ($giA == $giB) {
+					if ($giA eq $giB) {
 						$newFam{$taxon}{$giB} = $scoreB;
 					}
 					else {
@@ -1123,7 +1123,7 @@ sub BlastForAgreement {
 		#print OUT "here are the hits: " . join(" ", @hits) . "\n";
 		my $subj = $subject{$taxon};
 		foreach my $hit (@hits) {
-			if ($hit == $subj) {
+			if ($hit eq $subj) {
 				$agreements++; }
 			else {
 				$disagreements++; }
