@@ -55,7 +55,7 @@ foreach my $taxon (@taxaArr)
 		$tempGi=shift(@giArr);
 		#print "comparing $giArr[0] to $tempGi\n";
 		if (defined $giArr[0]) { 
-			if ($giArr[0] != $tempGi)
+			if ($giArr[0] ne $tempGi)
 			{
 				push @nrGiArr, $tempGi;
 			}
