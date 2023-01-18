@@ -13,9 +13,6 @@ my $inputA=shift(@ARGV);
 my $inputB=shift(@ARGV);
 my $quietOrConcise=shift(@ARGV);
 
-
-
-
 my $quietFlag=0; my $conciseFlag=0; my $orgFile=-1; my $orgFlag=0;
 if ($quietOrConcise =~ m/-q/) {
 	$quietFlag = 1;
@@ -264,11 +261,15 @@ sub GetAgreementScore {
 	my $score=0;
 	foreach my $taxon (keys %fam1) {
 		if (exists $fam2{$taxon}) {
+			print "will the regex work correctly on the following?\n";
+			print $fam1{$taxon};
+			print "\n";
+			sleep 30;
 			$fam1{$taxon} =~ m/\{*(\d+)\}*/;
 			my $gi1 = $1;
 			$fam2{$taxon} =~ m/\{*(\d+)\}*/;
 			my $gi2 = $1;
-			if ($gi1 == $gi2) {
+			if ($gi1 eq $gi2) {
 				$score++;
 			}
 		}
@@ -289,7 +290,7 @@ sub GetConsensusFam {
 			my $gi1 = $1;
 			$fam2{$taxon} =~ m/\{*(\d+)\}*/;
 			my $gi2 = $1;
-			if ($gi1 == $gi2) {
+			if ($gi1 eq $gi2) {
 				$consensus{$taxon} = $gi1;
 				$scores{$taxon} = ($scores1{$taxon} + $scores2{$taxon});
 			}
@@ -376,7 +377,7 @@ sub GetFams {
 				foreach my $family (@famsArr) {
 					if ($family =~ m/.+/) {
 						my $gi = shift(@giArr);
-						if ($gi != -1) {
+						if ($gi ne -1) {
 							$fam{$family}{$taxon} = $gi;
 							#print "fam{$family}{$taxon}=$gi\n";
 						}
