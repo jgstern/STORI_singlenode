@@ -14,7 +14,6 @@
 use Data::Dumper;
 
 my $STORIdir = "/home/ec2-user/STORI/";
-#my $STORIpbsPath = $STORIdir . "STORI-pbs_t";
 my $inputA=shift(@ARGV);
 my $inputB=shift(@ARGV);
 my $runNumberA=shift(@ARGV);
@@ -128,7 +127,7 @@ if ($go =~ m/yes/) {
 	system($cmd);
 
 	
-	my $command = "exec perl /home/ec2-user/STORI/STORI.pl $runNumberA $sourceDirPathA $windowSize $finalMaxFams $sc > $sourceDirPathA" . "/STORI-log-sc" . $sc . ".txt 2>&1";
+	my $command = "exec perl $STORIdir" . "STORI.pl $runNumberA $sourceDirPathA $windowSize $finalMaxFams $sc > $sourceDirPathA" . "/STORI-log-sc" . $sc . ".txt 2>&1";
 	print "cmd is: " . $command . "\n";
 
 	$runA_id = fork();
@@ -146,7 +145,7 @@ if ($go =~ m/yes/) {
 	
 	
 	
-	my $command = "exec perl /home/ec2-user/STORI/STORI.pl $runNumberB $sourceDirPathB $windowSize $finalMaxFams $sc > $sourceDirPathB" . "/STORI-log-sc" . $sc . ".txt 2>&1";
+	my $command = "exec perl $STORIdir" . "STORI.pl $runNumberB $sourceDirPathB $windowSize $finalMaxFams $sc > $sourceDirPathB" . "/STORI-log-sc" . $sc . ".txt 2>&1";
 	print "cmd is: " . $command . "\n";
 	
 	$runB_id = fork();
@@ -182,6 +181,9 @@ sub GetAgreementScore {
 	my $score=0;
 	foreach my $taxon (keys %fam1) {
 		if (exists $fam2{$taxon}) {
+			print "inside GetAgreementScore\n";
+			print "$fam2{$taxon}\n"; #we need to see this to understand how to change the regex for accessions instead of GIs
+			sleep 30;
 			$fam1{$taxon} =~ m/\{*(\d+)\}*/;
 			my $gi1 = $1;
 			$fam2{$taxon} =~ m/\{*(\d+)\}*/;
@@ -200,6 +202,9 @@ sub GetConsensusFam {
 	my %consensus=();
 	foreach my $taxon (keys %fam1) {
 		if (exists $fam2{$taxon}) {
+			print "inside GetConsensusFam\n";
+			print "$fam2{$taxon}\n"; #we need to see this to understand how to change the regex for accessions instead of GIs
+			sleep 30;
 			$fam1{$taxon} =~ m/\{*(\d+)\}*/;
 			my $gi1 = $1;
 			$fam2{$taxon} =~ m/\{*(\d+)\}*/;
