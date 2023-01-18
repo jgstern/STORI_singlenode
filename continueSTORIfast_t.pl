@@ -10,7 +10,9 @@
 #	each iterator’s full taxa list begins in a randomized order, which the iterators
 #	reshuffle every time their sliding windows reach the ends of their lists. This
 #	randomization causes the iterators to sample different areas of family space. 
-	
+
+use lib '/home/josh/perl5/lib';
+use lib '/home/josh/perl5/lib/perl5';
 use Data::Dumper;
 
 my $STORIdir = "/home/ec2-user/STORI/";
@@ -188,7 +190,7 @@ sub GetAgreementScore {
 			my $gi1 = $1;
 			$fam2{$taxon} =~ m/\{*(\d+)\}*/;
 			my $gi2 = $1;
-			if ($gi1 == $gi2) {
+			if ($gi1 eq $gi2) {
 				$score++;
 			}
 		}
@@ -209,7 +211,7 @@ sub GetConsensusFam {
 			my $gi1 = $1;
 			$fam2{$taxon} =~ m/\{*(\d+)\}*/;
 			my $gi2 = $1;
-			if ($gi1 == $gi2) {
+			if ($gi1 eq $gi2) {
 				$consensus{$taxon} = $gi1;
 			}
 		}
@@ -266,7 +268,7 @@ sub GetFams {
 				foreach my $family (@famsArr) {
 					if ($family =~ m/.+/) {
 						my $gi = shift(@giArr);
-						if ($gi != -1) {
+						if ($gi ne -1) {
 							$fam{$family}{$taxon} = $gi;
 							#print "fam{$family}{$taxon}=$gi\n";
 						}
