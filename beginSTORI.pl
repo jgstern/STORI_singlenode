@@ -16,7 +16,6 @@ my $searchOrderFile=shift(@ARGV);
 my $windowSize=shift(@ARGV);
 my $finalMaxFams=shift(@ARGV);
 
-
 if ((!(defined $runNumber)) || (!(defined $parentDirPath)) || (!(defined $searchOrderFile)) || (!(defined $windowSize)) || (!(defined $finalMaxFams))) {
 	print "usage: perl /path/to/beginSTORI.pl runNumber /path/to/dir/containing/source/dir taxaFile windowSize finalMaxFams\n";
 	exit;
@@ -123,7 +122,7 @@ if ($go =~ m/yes/) {
 	
 	if ($input eq "blastoff") {
 		
-		my $command = "exec perl /home/ec2-user/STORI/STORI.pl $runNumber" . "a $sourceDirPathA $windowSize $finalMaxFams 0 > $sourceDirPathA" . "/STORI-log-sc0.txt 2>&1";
+		my $command = "exec perl $home/STORI.pl $runNumber" . "a $sourceDirPathA $windowSize $finalMaxFams 0 > $sourceDirPathA" . "/STORI-log-sc0.txt 2>&1";
 		
 		$runA_id = fork();
 
@@ -137,7 +136,7 @@ if ($go =~ m/yes/) {
 		}
 		print "runA_id is " . $runA_id . "\n";
 		
-		$command = "exec perl /home/ec2-user/STORI/STORI.pl $runNumber" . "b $sourceDirPathB $windowSize $finalMaxFams 0 > $sourceDirPathB" . "/STORI-log-sc0.txt 2>&1";
+		$command = "exec perl $home/STORI.pl $runNumber" . "b $sourceDirPathB $windowSize $finalMaxFams 0 > $sourceDirPathB" . "/STORI-log-sc0.txt 2>&1";
 		
 		$runB_id = fork();
 		
@@ -262,19 +261,19 @@ sub MakeQueryGis_new {
 	print "taxa sampled\: " . join(" ", @taxaSample) . "\n";
 	
 	open giFile, ">>$queryGiPath";
-	
+
 #	The below foreach loop ensures that when the STORI.pl iterator begins, 
 #	each seed has its own unique
 #“quasi”-family. The quasi-families are not biologically meaningful families.
 #However, as iteration progresses in STORI.pl, these quasi-families will become plausible
 #predictions of families (orthologous proteins). 
-	
-#	To prevent abundant families from outcompeting sparse families, beginSTORI.pl can boost
-#the seed sequence scores. Using a
-#single parameter $offset_factor, the user defines a range for all initial seed scores,
-#specifying the extent to which the seeds persist for multiple taxa list
-#traversals within the first pair of STORI.pl instances.
-	
+#	
+#		To prevent abundant families from outcompeting sparse families, beginSTORI.pl can boost
+#		the seed sequence scores. Using a
+#		single parameter $offset_factor, the user defines a range for all initial seed scores,
+#		specifying the extent to which the seeds persist for multiple taxa list
+#		traversals within the first pair of STORI.pl instances.
+
 	my $x=0;
 	foreach my $gi (@seedGis) {
 		my $randScore = GenerateRandomScore($offset_factor);
@@ -289,8 +288,6 @@ sub MakeQueryGis_new {
 	print "Number of seed GIs\: $ans\n\n";
 	return $ans;
 }
-
-
 
 sub GenerateRandomScore {
 	my $ans;
