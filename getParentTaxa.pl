@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
-#use lib '/nv/hp10/jstern7/perl5reinstall/lib';
-#use lib '/nv/hp10/jstern7/perl5reinstall/lib/perl5';
+use lib '/nv/hp10/jstern7/perl5reinstall/lib';
+use lib '/nv/hp10/jstern7/perl5reinstall/lib/perl5';
 use strict;
 use Fcntl ':flock';
 
@@ -43,7 +43,7 @@ foreach my $taxon (@taxaArr)
 	foreach my $gi (@giArr) #we just want the query gis, not the hits
 	{
 		chomp($gi);
-		$gi =~ s/^(.+?)\s+.+?\s+.+?.*/$1/;
+		$gi =~ s/^(.+?)\s+.+?\s+\d+.*$/$1/;
 		$giArr[$count] = $gi;
 		#print $giArr[$count] . "\n"; 
 		$count++;
@@ -58,7 +58,12 @@ foreach my $taxon (@taxaArr)
 			if ($giArr[0] ne $tempGi)
 			{
 				push @nrGiArr, $tempGi;
+				#print "added $tempGi to nrGiArr\n";
 			}
+		}
+		else {
+			push @nrGiArr, $tempGi;
+			#print "added $tempGi to nrGiArr\n";
 		}
 	}
 	
@@ -77,8 +82,8 @@ close BATCH_QUERY;
 
 foreach my $line (@queryArr_unparsed) {		
 	chomp($line);
-	if (!($line =~ m/h\s.+/)) {
-		if ($line =~ m/(.+?)\s(.+?)/) {
+	if (!($line =~ m/^h\s.+$/)) {
+		if ($line =~ m/^(.+?)\s(\d+)$/) {
 			#tempHash{<gi>} = <parent taxon>
 			$tempHash{$1} = $gi_lookup_hash{$1};
 			#print "tempHash\{" . $1 . "\} = " . $gi_lookup_hash{$1} . "\n";
