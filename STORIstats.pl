@@ -756,7 +756,7 @@ sub GetAgreementScore {	#returns the #agreements normalized to the #taxa with a 
 			my $gi1 = $1;
 			$fam2{$taxon} =~ m/\{*(\d+)\}*/;
 			my $gi2 = $1;
-			if ($gi1 == $gi2) {
+			if ($gi1 eq $gi2) {
 				$score++;
 			}
 		}
