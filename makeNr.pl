@@ -37,13 +37,9 @@ foreach $taxon (@taxaArr) {
 	print "cmd is: $command\n";
 	system("$command");
 	RemoveExtraGIs($nrfilename, $nrGIfilename, $taxon);
-	$command="$makeblastdbPath -parse_seqids -in $nrGIfilename -title $taxon -out $blastDirPath/$taxon";
+	$command="$makeblastdbPath -dbtype prot -parse_seqids -in $nrGIfilename -title $taxon -out $blastDirPath/$taxon";
 	print "cmd is: $command\n";
 	system("$command");
-        #print "ok lets take 5";
-        #sleep 5;
-        #print "\n";
-        #sleep 300;
 }
 
 
