@@ -111,10 +111,10 @@ file to use JSON.
 	cd bin  
 	ln /home/ec2-user/Python-2.7.9/python python279
 	
-11. To save GitHub space I omitted the BLAST executables from the STORI_singlenode repo, however you will find them in the STORI repo. so these commands should retrieve them:  
-	wget https://github.com/jgstern/STORI/raw/master/blastdbcmd  
-	wget https://github.com/jgstern/STORI/raw/master/blastp  
-	wget https://github.com/jgstern/STORI/raw/master/makeblastdb  
+11. The original STORI repo contains the original BLAST+ executables. However, now it is 10 years later, and those binaries will crash if your FASTA deflines use a pdb accession format with more than 1 letter for the chain. Hence you should grab the latest version: 
+	wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.13.0+-x64-linux.tar.gz  
+	
+	Next, do `tar -xvf ncbi-blast-2.13.0+-x64-linux.tar.gz` and grab these 3 binaries: makeblastdb, blastp, and blastdbcmd  
 
 
 # TODO
