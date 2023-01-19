@@ -183,12 +183,9 @@ sub GetAgreementScore {
 	my $score=0;
 	foreach my $taxon (keys %fam1) {
 		if (exists $fam2{$taxon}) {
-			print "inside GetAgreementScore\n";
-			print "$fam2{$taxon}\n"; #we need to see this to understand how to change the regex for accessions instead of GIs
-			sleep 30;
-			$fam1{$taxon} =~ m/\{*(\d+)\}*/;
+			$fam1{$taxon} =~ m/^(.+?)\s*.+$/;
 			my $gi1 = $1;
-			$fam2{$taxon} =~ m/\{*(\d+)\}*/;
+			$fam2{$taxon} =~ m/^(.+?)\s*.+$/;
 			my $gi2 = $1;
 			if ($gi1 eq $gi2) {
 				$score++;
@@ -204,12 +201,9 @@ sub GetConsensusFam {
 	my %consensus=();
 	foreach my $taxon (keys %fam1) {
 		if (exists $fam2{$taxon}) {
-			print "inside GetConsensusFam\n";
-			print "$fam2{$taxon}\n"; #we need to see this to understand how to change the regex for accessions instead of GIs
-			sleep 30;
-			$fam1{$taxon} =~ m/\{*(\d+)\}*/;
+			$fam1{$taxon} =~ m/^(.+?)\s*.+$/;
 			my $gi1 = $1;
-			$fam2{$taxon} =~ m/\{*(\d+)\}*/;
+			$fam2{$taxon} =~ m/^(.+?)\s*.+$/;
 			my $gi2 = $1;
 			if ($gi1 eq $gi2) {
 				$consensus{$taxon} = $gi1;
