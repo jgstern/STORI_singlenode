@@ -1,25 +1,25 @@
 STORI
 =====
 
-###Selectable Taxon Ortholog Retrieval Iteratively
+### Selectable Taxon Ortholog Retrieval Iteratively
 
-####For the motivation behind STORI, check out our PrePrint:
-####[Accessing and applying molecular history](https://dx.doi.org/10.7287/peerj.preprints.1293v1)
+#### For the motivation behind STORI, check out our PrePrint:
+#### [Accessing and applying molecular history](https://dx.doi.org/10.7287/peerj.preprints.1293v1)
 
 User Guide: [https://tinyurl.com/mr395m6z](https://tinyurl.com/mr395m6z)
 Thesis: [http://linkd.in/1fZO63l](http://linkd.in/1fZO63l)
 
-###4/20/2015 - Introducing single-node STORI
+### 4/20/2015 - Introducing single-node STORI
 
 https://github.com/jgstern/STORI_singlenode
 
 Now STORI should run on any box with bash, Perl, and Python.
 The initial release of STORI requires a cluster using the job
 scheduler Moab, but this latest release runs on a single node.
-I tested it on RHEL 6.5 [and as of 1/17/2023 am in the process of getting it working with CentOS 7 using NCBI's modern accession format, rather than GIs].
+I tested it on CentOS 7 using NCBI's modern accession format (rather than GIs).
 
 The user guide for multi-node STORI should be sufficient for
-setup and usage of single-node STORI, with a few minor adjustments.
+setup and usage of single-node STORI, with a few adjustments.
 
 1. STORIcontrol.pl is now STORIcontrol.py  
 	I refactored STORIcontrol from Perl to Python, to help me learn
@@ -53,32 +53,24 @@ file to use JSON.
 	\curl -L http://install.perlbrew.pl | bash  
 	echo "source ~/perl5/perlbrew/etc/bashrc" >> .bash_profile
 
-3. Installed GNUscreen:  
+3. Installed GNUscreen, gcc, "Development Tools", et al.:  
 	sudo su  
 	yum install screen  
-	exit
-
-4. Installed gcc  
-	sudo su  
 	yum install gcc  
-	exit
-
-5. Installed "Development Tools"  
-	sudo su  
 	yum groupinstall "Development Tools"  
 	yum install bzip2  
 	yum install perl-core  
 	yum install wget  
-	exit  
+	exit
 
-6. Installed Perl for ec2-user:  
+4. Installed Perl for ec2-user:  
 	screen  
 	perlbrew install perl-5.16.0
 
-7. Installed cpanm for (I think) all perlbrew perls  
+5. Installed cpanm for (I think) all perlbrew perls  
 	perlbrew install-cpanm
 
-8. Install openssl  
+6. Install openssl  
 	sudo su  
 	cd /usr/src  
 	wget https://www.openssl.org/source/openssl-3.0.7.tar.gz  
@@ -96,10 +88,10 @@ file to use JSON.
 	[exit terminal then reopen]  
 	openssl version  
 
-9. Install cpan modules  
+7. Install cpan modules  
 	cpanm -i Statistics::Descriptive Data::Dumper List::MoreUtils Time::Elapse Bio::SeqIO Getopt::Long LWP::Simple LWP::UserAgent HTTP::CookieJar::LWP LWP::Protocol::https  
 
-10. Install Python 2.7.9 (python 2.6 lacks a necessary module)  
+8. Install Python 2.7.9 (python 2.6 lacks a necessary module)  
 	sudo wget https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz  
 	sudo chmod 755 Python-2.7.9.tgz  
 	tar -xvf Python-2.7.9.tgz  
@@ -111,7 +103,7 @@ file to use JSON.
 	cd bin  
 	ln /home/ec2-user/Python-2.7.9/python python279
 	
-11. The original STORI repo contains the original BLAST+ executables. However, now it is 10 years later, and those binaries will crash if your FASTA deflines use a pdb accession format with more than 1 letter for the chain. Hence you should grab the latest version: 
+9. The original STORI repo contains the original BLAST+ executables. However, now it is 10 years later, and those binaries will crash if your FASTA deflines use a pdb accession format with more than 1 letter for the chain. Hence you should grab the latest version: 
 	wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.13.0+-x64-linux.tar.gz  
 	
 	Next, do `tar -xvf ncbi-blast-2.13.0+-x64-linux.tar.gz` and grab these 3 binaries: makeblastdb, blastp, and blastdbcmd  
