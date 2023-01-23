@@ -46,7 +46,7 @@ file to use JSON.
 
 
 
-###Method for preparing a VM for STORI:
+### Method for preparing a VM for STORI:
 1. Install CentOS 7
 
 2. Installed perlbrew  
@@ -116,6 +116,24 @@ file to use JSON.
 	
 	Next, do `tar -xvf ncbi-blast-2.13.0+-x64-linux.tar.gz` and grab these 3 binaries: makeblastdb, blastp, and blastdbcmd  
 
+
+### End-to-end example
+1. Set up a CentOS VM as above  
+2. Make a directory in your home dir for STORI and put these scripts in it  
+3. Decide which taxa are of interest and use their txids to populate ``taxids_GIs.txt``  
+4. It is also best to populate ``taxids_GIs.txt`` with the Nucleotide accession(s).version for each chromosome of a completed genome for each taxon ID  
+5. If the genome is not complete or the Nucleotide accession is otherwise unavailable, you can simply type ``na``  
+6. In the latter scenario you might get organellar/plastid protein sequences; that is why a Nucleotide finished chromosome(s) accession.version is preferable  
+7. ``perl getFastas.pl``  
+8. ``perl makeNr.pl``  
+9. ``python STORIcontrol.py``  
+
+### For steps 3-4 above, how do I get the taxon IDs and Nucleotide accessions?
+1. Go to https://www.ncbi.nlm.nih.gov/taxonomy  
+2. In the search bar, enter 1[uid] and click Search  
+3. You should see a single result that says "root" - the root of the tree of life - click it  
+4. Now you should see "Archaea, Bacteria, Eukaryota, Viruses..." click any of them  
+5. 
 
 # TODO
 - make sure STORIstats.pl works with accessions rather than GIs  
