@@ -136,5 +136,5 @@ file to use JSON.
 5. 
 
 # TODO
-- make sure STORIstats.pl works with accessions rather than GIs  
-- remove hard-coded file paths from continueSTORIfast_t.pl  
+- make the end-to-end example more detailed & complete
+- better parameterize the various file paths at the beginning of each of the scripts, so that setup doesn't require updating the beginning of each script  
