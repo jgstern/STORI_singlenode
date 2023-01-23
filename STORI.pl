@@ -36,7 +36,7 @@ my $windowSize = shift(@ARGV);				#number of taxa in the sliding window = window
 my $finalMaxFams = shift(@ARGV);			#the # of fams can reach as much finalMaxFams families.
 my $sc = shift(@ARGV);
 
-my $blastTemp = $sourceFilesDir . "/tempBlastDB"; #in a few lines we are going to copy the relevant data
+my $blastTemp = "/tmp/username/STORI_tempBLASTdbs/" . $runNumber;   #in a few lines we are going to copy the relevant data
 								#files from $blastdbDir to $blastTemp, and then set
 								#$blastdbDir = $blastTemp. This copying will mean that
 								#STORI will access the local volume on the compute node
@@ -44,7 +44,7 @@ my $blastTemp = $sourceFilesDir . "/tempBlastDB"; #in a few lines we are going t
 								#STORI.pl on the same node, this step will prevent attempts to access
 								#the same file simultaneously by 2 different processes)
 					
-my $cmd = "mkdir $blastTemp";
+my $cmd = "mkdir -p $blastTemp";
 system($cmd);
 
 
