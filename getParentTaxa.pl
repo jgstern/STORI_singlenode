@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
-use lib '/nv/hp10/jstern7/perl5reinstall/lib';
-use lib '/nv/hp10/jstern7/perl5reinstall/lib/perl5';
+use lib '/home/josh/perl5/lib';
+use lib '/home/josh/perl5/lib/perl5';
 use strict;
 use Fcntl ':flock';
 
@@ -33,10 +33,6 @@ foreach my $taxon (@taxaArr)
 {
 	my $targetName = $taxon . "_" . $taxon;
 	open (hitFile, "$hitDir/$targetName");
-	unless (flock(hitFile, 1)) {
-		warn "File $hitDir/$targetName already locked; waiting...\n";
-		flock(hitFile, 1) or die;
-	}
 	@giArr = <hitFile>;
 	close hitFile;
 	$count=0;
