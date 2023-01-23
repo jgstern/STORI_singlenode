@@ -63,7 +63,7 @@ file to use JSON.
 	yum install wget  
 	exit
 
-4. Installed Perl for ec2-user:  
+4. Installed Perl for regular user:  
 	screen  
 	perlbrew install perl-5.16.0
 
