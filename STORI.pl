@@ -9,8 +9,8 @@
 #particular sequence as a best hit, STORI assigns each hit to a family.
 
 #!/usr/bin/perl -wT
-use lib '/nv/hp10/jstern7/perl5reinstall/lib';
-use lib '/nv/hp10/jstern7/perl5reinstall/lib/perl5';
+use lib '/home/josh/perl5/lib';
+use lib '/home/josh/perl5/lib/perl5';
 
 use strict;
 use Fcntl ':flock';
@@ -19,12 +19,16 @@ use List::MoreUtils qw / uniq /;
 use Statistics::Descriptive;
 use Time::Elapse;
 
+my $home = "/home/josh";
 
-my $hitDir="/home/ec2-user/STORI/universal20150110/hits";            #directory containing taxon-taxon blast results
-my $blastdbDir="/home/ec2-user/STORI/universal20150110/blast";
-my $blastdbcmdPath = "/home/ec2-user/STORI/blastdbcmd";
-my $blastpPath = "/home/ec2-user/STORI/blastp"; 
-my $getParentTaxaPath = "/home/ec2-user/STORI/getParentTaxa.pl";
+#my $hitDir= $home . "/scratch/viruses_2017/hits";            #directory containing taxon-taxon blast results
+#my $blastdbDir= $home . "/scratch/viruses_2017/blast";
+my $hitDir= $home . "/scratch/archaea/hits";
+my $blastdbDir= $home . "/scratch/archaea/blast";
+
+my $blastdbcmdPath = $home . "/STORI/blastdbcmd";
+my $blastpPath = $home . "/STORI/blastp"; 
+my $getParentTaxaPath = $home . "/STORI/getParentTaxa.pl";
 
 my $runNumber = shift(@ARGV);		
 my $sourceFilesDir = shift(@ARGV);
@@ -545,7 +549,7 @@ sub MakeQueryFasta {
 	
 	foreach my $taxon (keys %txgi) {
 		#push @smallTaxaArr, $taxon;
-		if ($txgi{$taxon} > -1) {
+		if ($txgi{$taxon} ne -1) {
 			$lookup{$txgi{$taxon}} = $taxon;
 		}
 	}
@@ -554,7 +558,7 @@ sub MakeQueryFasta {
 	
 	foreach my $gi (keys %lookup) {
 		my $taxon = $lookup{$gi};
-		if ($gi > 0) {
+		if (($gi ne 0) and ($gi ne -1)) {
 			my $cmd="$blastdbcmdPath -entry $gi -db " . $blastdbDir . "/$taxon -outfmt \"\%f\"";
 			#print OUT "cmd is: " . $cmd . "\n";
 			my $seq = qx($cmd);
@@ -613,7 +617,8 @@ sub Blast {
 	my $queryFastaPath = shift(@_);
 	my $taxon = shift(@_);
 	my $blastResultsPath = shift(@_);
-	my $cmd = $blastpPath . " -db " . $blastdbDir . "/$taxon -query $queryFastaPath -evalue 0.05 -outfmt \"6 qgi sgi\" -num_descriptions 10 -num_alignments 10 -parse_deflines";
+	#my $cmd = $blastpPath . " -db " . $blastdbDir . "/$taxon -query $queryFastaPath -evalue 0.05 -outfmt \"6 qgi sgi\" -num_descriptions 10 -num_alignments 10 -parse_deflines";
+	my $cmd = $blastpPath . " -db " . $blastdbDir . "/$taxon -query $queryFastaPath -evalue 0.05 -outfmt \"6 qaccver saccver\" -max_target_seqs 10 -parse_deflines";
 	#print OUT "cmd is: $cmd\n";
 	my $output = qx($cmd);
 	open (bres, ">$blastResultsPath");
@@ -871,7 +876,7 @@ sub CheckObvious {
 				$giB = GetTopHit($taxon_gi_assigned{$famB}{$taxon});
 			}
 			
-			if ( ($giA > -1) && ($giB > -1) ) {
+			if ( ($giA ne -1) && ($giB ne -1) ) {
 				if ($giA eq $giB) {
 					$numAgreements++;
 				}
