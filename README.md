@@ -111,7 +111,7 @@ file to use JSON.
 
 ### End-to-end example
 1. Set up a CentOS VM as above  
-2. Make a directory in your home dir for STORI and put these scripts in it  
+2. Make a directory in your home dir for STORI and put these scripts in it. Check each script at the beginning to make sure the file paths are correct for your machine.    
 3. Decide which taxa are of interest and use their txids to populate ``taxids_GIs.txt``  
 4. It is also best to populate ``taxids_GIs.txt`` with the Nucleotide accession(s).version for each chromosome of a completed genome for each taxon ID  
 5. If the genome is not complete or the Nucleotide accession is otherwise unavailable, you can simply type ``na``  
