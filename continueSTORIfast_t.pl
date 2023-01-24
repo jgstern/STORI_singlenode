@@ -10,12 +10,12 @@
 #	each iterator’s full taxa list begins in a randomized order, which the iterators
 #	reshuffle every time their sliding windows reach the ends of their lists. This
 #	randomization causes the iterators to sample different areas of family space. 
-
+	
 use lib '/home/josh/perl5/lib';
 use lib '/home/josh/perl5/lib/perl5';
 use Data::Dumper;
 
-my $STORIdir = "/home/ec2-user/STORI/";
+my $STORIdir = "/home/josh/STORI/";
 my $inputA=shift(@ARGV);
 my $inputB=shift(@ARGV);
 my $runNumberA=shift(@ARGV);
@@ -183,11 +183,13 @@ sub GetAgreementScore {
 	my $score=0;
 	foreach my $taxon (keys %fam1) {
 		if (exists $fam2{$taxon}) {
-			$fam1{$taxon} =~ m/^(.+?)\s*.+$/;
+			$fam1{$taxon} =~ m/^(.+)$/;
 			my $gi1 = $1;
-			$fam2{$taxon} =~ m/^(.+?)\s*.+$/;
+			$fam2{$taxon} =~ m/^(.+)$/;
 			my $gi2 = $1;
+			print "comparing $gi1 vs $gi2\n";
 			if ($gi1 eq $gi2) {
+				#print "match\n";
 				$score++;
 			}
 		}
@@ -201,11 +203,13 @@ sub GetConsensusFam {
 	my %consensus=();
 	foreach my $taxon (keys %fam1) {
 		if (exists $fam2{$taxon}) {
-			$fam1{$taxon} =~ m/^(.+?)\s*.+$/;
+			$fam1{$taxon} =~ m/^(.+)$/;
 			my $gi1 = $1;
-			$fam2{$taxon} =~ m/^(.+?)\s*.+$/;
+			$fam2{$taxon} =~ m/^(.+)$/;
 			my $gi2 = $1;
+			print "comparing $gi1 vs $gi2\n";
 			if ($gi1 eq $gi2) {
+				print "match\n";
 				$consensus{$taxon} = $gi1;
 			}
 		}
