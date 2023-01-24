@@ -4,14 +4,17 @@
 #-org <file> means organize the output according to a file, which specifies on each line <taxID> <species.name> <phylum>
 #-s means print the score for each family member in addition to the family members
 
-use lib '/nv/hp10/jstern7/perl5reinstall/lib';
-use lib '/nv/hp10/jstern7/perl5reinstall/lib/perl5';
+use lib '/home/josh/perl5/lib';
+use lib '/home/josh/perl5/lib/perl5';
 use Data::Dumper;
 use List::MoreUtils qw / uniq /;
 
 my $inputA=shift(@ARGV);
 my $inputB=shift(@ARGV);
 my $quietOrConcise=shift(@ARGV);
+
+
+
 
 my $quietFlag=0; my $conciseFlag=0; my $orgFile=-1; my $orgFlag=0;
 if ($quietOrConcise =~ m/-q/) {
@@ -169,7 +172,7 @@ elsif (($quietFlag==0) && ($conciseFlag==1) && ($orgFlag==0)) {
 		my %temp = %{$consensusFams{$family}};
 		foreach my $taxon (keys %temp) {
 			if (!($temp{$taxon} =~ m/\?/)) {
-				$conciseGis[$row][$col] = $temp{$taxon};
+					$conciseGis[$row][$col] = $temp{$taxon};
 				$row++;
 			}
 		}
@@ -261,13 +264,9 @@ sub GetAgreementScore {
 	my $score=0;
 	foreach my $taxon (keys %fam1) {
 		if (exists $fam2{$taxon}) {
-			print "will the regex work correctly on the following?\n";
-			print $fam1{$taxon};
-			print "\n";
-			sleep 30;
-			$fam1{$taxon} =~ m/\{*(\d+)\}*/;
+			$fam1{$taxon} =~ m/^(.+)$/;
 			my $gi1 = $1;
-			$fam2{$taxon} =~ m/\{*(\d+)\}*/;
+			$fam2{$taxon} =~ m/^(.+)$/;
 			my $gi2 = $1;
 			if ($gi1 eq $gi2) {
 				$score++;
@@ -286,9 +285,9 @@ sub GetConsensusFam {
 	my %scores=();
 	foreach my $taxon (keys %fam1) {
 		if (exists $fam2{$taxon}) {
-			$fam1{$taxon} =~ m/\{*(\d+)\}*/;
+			$fam1{$taxon} =~ m/^(.+)$/;
 			my $gi1 = $1;
-			$fam2{$taxon} =~ m/\{*(\d+)\}*/;
+			$fam2{$taxon} =~ m/^(.+)$/;
 			my $gi2 = $1;
 			if ($gi1 eq $gi2) {
 				$consensus{$taxon} = $gi1;
