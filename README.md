@@ -118,7 +118,8 @@ file to use JSON.
 6. In the latter scenario you might get organellar/plastid protein sequences; that is why a Nucleotide finished chromosome(s) accession.version is preferable  
 7. ``perl getFastas.pl``  
 8. ``perl makeNr.pl``  
-9. ``python STORIcontrol.py``  
+9. ``screen`` (starts a detachable terminal; to detach: ``Ctrl + a + d`` to reattach: ``screen -r``)
+10. ``python STORIcontrol.py``  
 
 ### For steps 3-4 above, how do I get the taxon IDs and Nucleotide accessions?
 1. Go to https://www.ncbi.nlm.nih.gov/taxonomy  
