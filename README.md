@@ -19,34 +19,9 @@ scheduler Moab, but this latest release runs on a single node.
 I tested it on CentOS 7 using NCBI's modern accession format (rather than GIs).
 
 The user guide for multi-node STORI should be sufficient for
-setup and usage of single-node STORI, with a few adjustments.
+setup and usage of single-node STORI, with a few adjustments. For a comparison of multi vs single versions, see end of this readme.
 
-1. STORIcontrol.pl is now STORIcontrol.py  
-	I refactored STORIcontrol from Perl to Python, to help me learn
-	Python. This means you'll need to have a working install of
-	Python 2.7, and invoke STORIcontrol with  
-		  >python STORIcontrol.py  
-	STORIcontrol.py still needs to run in background to monitor convergence
-	and continue runs as necessary, but the overhead is low.
-2. The more runs you start, the slower everything goes [assuming only 1 core]  
-	I changed beginSTORI.pl and continueSTORIfast_t.pl to kick off
-	new STORI.pl PIDs rather than submit new jobs to a job scheduler.
-3. Wall-clock limit for STORI.pl is uniform and now controlled
-by maxRuntime in STORIcontrol.py  
-	In the future I would like to make this limit adaptive and a
-	unique property of each run.
-4. Comparing CPU hours until convergence between different runs is now
-complicated, since more running STORI.pl processes mean slower performance.
-The runtime attribute should instead be thought of as "total process wall time for this run".
-5. Fixed divide by zero bug in sub DecideReduction of STORI.pl.
-
-Eventually I would like to integrate STORIstats with STORIcontrol,
-and rewrite the methods for saving and reading the job_data_STORI
-file to use JSON. 
-
-
-
-### Method for preparing a VM for STORI:
+### Getting started: Method for preparing a VM for STORI:
 1. Install CentOS 7
 
 2. Installed perlbrew  
@@ -132,3 +107,28 @@ file to use JSON.
 # TODO
 - make the end-to-end example more detailed & complete
 - better parameterize the various file paths at the beginning of each of the scripts, so that setup doesn't require updating the beginning of each script  
+
+
+# Comparison
+1. STORIcontrol.pl is now STORIcontrol.py  
+	I refactored STORIcontrol from Perl to Python, to help me learn
+	Python. This means you'll need to have a working install of
+	Python 2.7, and invoke STORIcontrol with  
+		  >python STORIcontrol.py  
+	STORIcontrol.py still needs to run in background to monitor convergence
+	and continue runs as necessary, but the overhead is low.
+2. The more runs you start, the slower everything goes [assuming only 1 core]  
+	I changed beginSTORI.pl and continueSTORIfast_t.pl to kick off
+	new STORI.pl PIDs rather than submit new jobs to a job scheduler.
+3. Wall-clock limit for STORI.pl is uniform and now controlled
+by maxRuntime in STORIcontrol.py  
+	In the future I would like to make this limit adaptive and a
+	unique property of each run.
+4. Comparing CPU hours until convergence between different runs is now
+complicated, since more running STORI.pl processes mean slower performance.
+The runtime attribute should instead be thought of as "total process wall time for this run".
+5. Fixed divide by zero bug in sub DecideReduction of STORI.pl.
+
+Eventually I would like to integrate STORIstats with STORIcontrol,
+and rewrite the methods for saving and reading the job_data_STORI
+file to use JSON. 
