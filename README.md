@@ -1,4 +1,4 @@
-STORI
+STORI (single-node)
 =====
 
 ### Selectable Taxon Ortholog Retrieval Iteratively
@@ -6,22 +6,13 @@ STORI
 #### For the motivation behind STORI, check out our PrePrint:
 #### [Accessing and applying molecular history](https://dx.doi.org/10.7287/peerj.preprints.1293v1)
 
-User Guide: [https://tinyurl.com/mr395m6z](https://tinyurl.com/mr395m6z)
+User Guide (multi-node): [https://tinyurl.com/mr395m6z](https://tinyurl.com/mr395m6z)
 Thesis: [http://linkd.in/1fZO63l](http://linkd.in/1fZO63l)
 
-### 4/20/2015 - Introducing single-node STORI
+(The user guide for multi-node STORI should be informative for setup and usage of single-node STORI, with a few adjustments. For a comparison of multi vs single versions, see end of this readme.)
 
-https://github.com/jgstern/STORI_singlenode
 
-Now STORI should run on any box with bash, Perl, and Python.
-The initial release of STORI requires a cluster using the job
-scheduler Moab, but this latest release runs on a single node.
-I tested it on CentOS 7 using NCBI's modern accession format (rather than GIs).
-
-The user guide for multi-node STORI should be sufficient for
-setup and usage of single-node STORI, with a few adjustments. For a comparison of multi vs single versions, see end of this readme.
-
-### Getting started: Method for preparing a VM for STORI:
+### Single-node: Getting started: Method for preparing a VM for STORI:
 1. Install CentOS 7
 
 2. Installed perlbrew  
@@ -110,6 +101,10 @@ setup and usage of single-node STORI, with a few adjustments. For a comparison o
 
 
 # Comparison
+The initial release of STORI requires a cluster using the job
+scheduler Moab, but this latest release runs on a single node.
+I tested it on CentOS 7 using NCBI's modern accession format (rather than GIs).
+
 1. STORIcontrol.pl is now STORIcontrol.py  
 	I refactored STORIcontrol from Perl to Python, to help me learn
 	Python. This means you'll need to have a working install of
