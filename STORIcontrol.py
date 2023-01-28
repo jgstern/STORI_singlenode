@@ -102,15 +102,15 @@ import threading
 import Queue
 import os.path
 
-home = "/home/ec2-user"
-arrayFile = "/home/ec2-user/STORI/job_data_STORI.txt"
-checkSTORIpath = "/home/ec2-user/STORI/checkSTORI.pl"
-continueSTORIpath_t = "/home/ec2-user/STORI/continueSTORIfast_t.pl"
-beginSTORIpath_t = "/home/ec2-user/STORI/beginSTORI.pl"
+home = "/home/josh"
+arrayFile = home + "/STORI/job_data_STORI.txt"
+checkSTORIpath = home + "/STORI/checkSTORI.pl"
+continueSTORIpath_t = home + "/STORI/continueSTORIfast_t.pl"
+beginSTORIpath_t = home + "/STORI/beginSTORI.pl"
 maxRuntime = 2  	#maximum wall time of a STORI.pl process in hours
 
 subprocess.check_call(["touch", arrayFile])
-arrayFileBackup = "/home/ec2-user/STORI/job_data_STORI_backup.txt"
+arrayFileBackup = home + "/STORI/job_data_STORI_backup.txt"
 subprocess.check_call(["cp", arrayFile, arrayFileBackup])
 
 
